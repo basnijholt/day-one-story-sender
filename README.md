@@ -18,7 +18,7 @@ The random send algorithm is written in a way that on the middle of the day ther
 Install Python dependencies
 ```
 pip install https://github.com/ryancox/motionless/archive/master.zip # because of bugged pip version
-pip install geopy 
+pip install geopy python-dateutil pytz
 ```
 
 ### Setup Google API
@@ -26,7 +26,6 @@ pip install geopy
 2. Install the Google Client Library with:
 ```
 pip install --upgrade google-api-python-client
-pip install https://github.com/ryancox/motionless/archive/master.zip
 ```
 3. Run (add the `--noauth_local_webserver` flag if you work through `ssh`)
 ```
