@@ -6,3 +6,4 @@ india.txt
 __pycache__/
 client_secret.json
 send.txt
+.DS_Store
