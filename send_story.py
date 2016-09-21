@@ -50,7 +50,7 @@ if __name__ == "__main__":
         # Send with 0.3% probability if time is in between 10:00 and 23:00.
         if now.time() > datetime.time(10, 0):
             if now.time() < datetime.time(23, 0):
-                send_now = randint(0, 1000) < 300
+                send_now = randint(0, 1000) < 3
                 if send_now:
                     print("Random number is smaller than 3")
                 else:
