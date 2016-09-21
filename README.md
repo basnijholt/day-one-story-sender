@@ -1,8 +1,8 @@
 # Day One story sender
 
-I promissed my girlfriend to send her a story from our trip every day. During our trip I wrote a diary everyday on my phone in the [Day One](http://dayoneapp.com/) app. Here I use the desktop app to export the stories.
+I promised my girlfriend to send her a story from our trip every day. During our trip, I wrote a diary everyday on my phone in the [Day One](http://dayoneapp.com/) app. Here I use the desktop app to export the stories.
 
-It uses the GMail API to send e-mails and sends a message on a random time during the day between 10:00 and 23:00.
+It uses the Gmail API to send e-mails and sends a message at a random time during the day between 10:00 and 23:00.
 
 ## How to use
 ### Setup stories to send and private variables
@@ -25,4 +25,4 @@ pip install --upgrade google-api-python-client
 ```
 python gmailsendapi.py
 ```
-After which you should receive a test mail.
+After which, you should receive a test mail.
