@@ -8,7 +8,7 @@ It uses the GMail API to send e-mails and sends a message on a random time durin
 ### Setup stories to send and private variables
 Select the Day One entries in the desktop Day One app and right-click `Open in... -> Plain Text -> TextEdit` and save this in the folder with these scripts.
 
-Edit the `private-file-example.py` and save as `private_file.py`.
+Edit the `private_variables_example.py` and save as `private_variables.py`.
 
 The random send algorithm is written in a way that on the middle of the day there is a 50% change of the e-mail being sent if the script is run every minute. I do this by adding a `cronjob` at my Raspberry Pi, by using `crontab -e` and then adding (edit full path):
 ```

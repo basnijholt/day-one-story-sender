@@ -6,8 +6,8 @@ from gmailsendapi import send_message, create_message
 import datetime
 import re
 from random import randint
-from private_file import my_mail, her_mail, day_one_text_file  # all strings
-from private_file import start_date  # datetime.date object
+from private_variables import my_mail, her_mail, day_one_text_file  # all strings
+from private_variables import start_date  # datetime.date object
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,7 +27,7 @@ def send_todays_story(sender, to, day_one_text_file=day_one_text_file,
     today_index = date_deltas.index(0)
     message_text = dagen[today_index]
     subject = "Love in India: #{}".format(today_index + 1)
-    message = create_message(sender, to, subject, message_text)
+    message = create_message(sender, to, subject, message_text, 'plain')
     send_message(message)
 
 

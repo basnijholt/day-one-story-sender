@@ -9,7 +9,7 @@ import argparse
 import base64
 from email.mime.text import MIMEText
 import sys
-from private_file import my_mail
+from private_variables import my_mail
 
 python_version = sys.version_info.major
 
@@ -57,7 +57,7 @@ def get_service():
     return service
 
 
-def create_message(sender, to, subject, message_text):
+def create_message(sender, to, subject, message_text, style='html'):
     """Create a message for an email.
 
     Args:
@@ -69,7 +69,7 @@ def create_message(sender, to, subject, message_text):
     Returns:
       An object containing a base64url encoded email object.
     """
-    message = MIMEText(message_text)
+    message = MIMEText(message_text, _subtype=style)
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
@@ -105,3 +105,4 @@ if __name__ == '__main__':
                              message_text='Test message')
 
     send_message(message)
+    print("You should have received a test message now.")
