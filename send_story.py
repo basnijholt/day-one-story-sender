@@ -13,18 +13,17 @@ import sys
 
 # Third party imports
 import dateutil.parser
-from geopy.geocoders import Nominatim
 import geopy.distance
-from gmailsendapi import send_message, create_message
+from geopy.geocoders import Nominatim
+from gmailsendapi import create_message, send_message
 from motionless import CenterMap
 from pytz import timezone, utc
 
 # Local imports
-from private_variables import my_mail, her_mail, day_one_text_file  # all strings
+from private_variables import day_one_file, her_mail, my_mail  # all strings
 from private_variables import start_date  # datetime.date object
 
 python_version = sys.version_info.major
-
 location = namedtuple('location', ['latitude', 'longitude'])
 file_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -92,31 +91,32 @@ def distance_text(entries, index):
     return "The distance since yesterday is {:.2} kilometers.".format(km)
 
 
-def send_todays_story(sender, to, day_one_text_file,
-                      base=start_date):
+def load_entries_from_json(day_one_file):
     if python_version == 2:
-        with open(day_one_text_file) as f:
+        with open(day_one_file) as f:
             data = json.load(f)
     else:
-        with open(day_one_text_file, encoding='utf-8') as f:
+        with open(day_one_file, encoding='utf-8') as f:
             data = json.load(f)
 
-    entries = [entry for entry in data['entries']]
+    return [entry for entry in data['entries']]
+
+
+def create_todays_message(day_one_file, base):
+    entries = load_entries_from_json(day_one_file)
     index = todays_index(base, len(entries))
     entry = entries[index]
 
     subject = "Love in India: #{}".format(index + 1)
-
     message_text = day_header(remove_entry_tag(entry['text']))
     message_text += "<p><em>{}</em></p>".format(parse_date(entry))
     message_text += "<p><em>{}</em></p>".format(weather(entry))
     message_text += "<p><strong>{}</strong></p>".format(adress(entry))
-    if index > 0:
+    if index > 0:  # Because a distance with the previous day doesn't exist.
         message_text += "<p><strong>{}</strong></p>".format(
             distance_text(entries, index))
     message_text += map_html(entry)
-    message = create_message(sender, to, subject, message_text, 'html')
-    send_message(message)
+    return subject, message_text
 
 
 if __name__ == "__main__":
@@ -149,8 +149,10 @@ if __name__ == "__main__":
                 print("It's later than 23 o'clock, so sending now")
 
             if send_now:
-                send_todays_story(my_mail, my_mail, day_one_text_file)
-                send_todays_story(my_mail, her_mail, day_one_text_file)
+                subject, msg_text = create_todays_message(day_one_file, start_date)
+                args = dict(sender=my_mail, subject=subject, message_text=msg_text)
+                send_message(create_message(to=my_mail, **args))
+                send_message(create_message(to=her_mail, **args))
                 print("Send time is {}".format(str(now.time())))
                 with open(send_file, 'w') as f:
                     f.write(str(now.date()))
