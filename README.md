@@ -10,9 +10,9 @@ Select the Day One entries in the desktop Day One app and right-click `Open in..
 
 Edit the `private-file-example.py` and save as `private-file.py`.
 
-The random send algorithm is written in a way that on the middle of the day there is a 50% change of the e-mail being sent if the script is run every minute. I do this by adding a `cronjob` at my Raspberry Pi, by using `crontab -e` and then adding:
+The random send algorithm is written in a way that on the middle of the day there is a 50% change of the e-mail being sent if the script is run every minute. I do this by adding a `cronjob` at my Raspberry Pi, by using `crontab -e` and then adding (edit full path):
 ```
-*/1 * * * * /usr/bin/python /full/path/to/send_story.py
+*/1 * * * * /usr/bin/python /home/pi/day-one-story-sender/send_story.py >> /home/pi/day-one-story-sender/send.log 2>&1
 ```
 
 ### Setup Google API
