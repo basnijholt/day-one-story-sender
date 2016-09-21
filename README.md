@@ -15,6 +15,12 @@ The random send algorithm is written in a way that on the middle of the day ther
 */1 * * * * /usr/bin/python /home/pi/day-one-story-sender/send_story.py >> /home/pi/day-one-story-sender/send.log 2>&1
 ```
 
+Install Python dependencies
+```
+pip install https://github.com/ryancox/motionless/archive/master.zip # because of bugged pip version
+pip install geopy 
+```
+
 ### Setup Google API
 1. Follow [step 1: Turn on the Gmail API](https://developers.google.com/gmail/api/quickstart/python#step_1_turn_on_the_api_name) to create a `client_secret.json` file.
 2. Install the Google Client Library with:

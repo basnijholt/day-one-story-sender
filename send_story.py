@@ -1,28 +1,32 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+# Standard lib imports
 from __future__ import print_function
-import os
-from gmailsendapi import send_message, create_message
+from collections import namedtuple
 import datetime
-import re
-from random import randint
-from private_variables import my_mail, her_mail, day_one_text_file  # all strings
-from private_variables import start_date  # datetime.date object
-import dateutil.parser
-from motionless import CenterMap
 import json
-from pytz import timezone, utc
+import os
+from random import randint
+import re
+import sys
+
+# Third party imports
+import dateutil.parser
 from geopy.geocoders import Nominatim
 import geopy.distance
-from collections import namedtuple
+from gmailsendapi import send_message, create_message
+from motionless import CenterMap
+from pytz import timezone, utc
+
+# Local imports
+from private_variables import my_mail, her_mail, day_one_text_file  # all strings
+from private_variables import start_date  # datetime.date object
+
+python_version = sys.version_info.major
 
 location = namedtuple('location', ['latitude', 'longitude'])
 file_path = os.path.dirname(os.path.abspath(__file__))
-
-with open('india.json', encoding='utf-8') as f:
-    data = json.load(f)
-
-entries = [entry for entry in data['entries']]
 
 
 def remove_entry_tag(text):
@@ -57,7 +61,11 @@ def todays_index(base, num_days):
 def weather(entry):
     temperature = entry['weather']['temperatureCelsius']
     description = entry['weather']['conditionsDescription']
-    return str(temperature) + ' °C, ' + description
+    if python_version == 2:
+        sep = ' degree Celsius, '
+    else:
+        sep = ' °C, '
+    return str(temperature) + sep + description
 
 
 def get_lat_lon(entry):
@@ -86,12 +94,15 @@ def distance_text(entries, index):
 
 def send_todays_story(sender, to, day_one_text_file,
                       base=start_date):
-    with open(day_one_text_file, encoding='utf-8') as f:
-        data = json.load(f)
+    if python_version == 2:
+        with open(day_one_text_file) as f:
+            data = json.load(f)
+    else:
+        with open(day_one_text_file, encoding='utf-8') as f:
+            data = json.load(f)
 
     entries = [entry for entry in data['entries']]
     index = todays_index(base, len(entries))
-    print(index)
     entry = entries[index]
 
     subject = "Love in India: #{}".format(index + 1)
@@ -127,7 +138,7 @@ if __name__ == "__main__":
         # Send with 0.3% probability if time is in between 10:00 and 23:00.
         if now.time() > datetime.time(10, 0):
             if now.time() < datetime.time(23, 0):
-                send_now = randint(0, 1000) < 300
+                send_now = randint(0, 1000) < 3
                 if send_now:
                     print("Random number is smaller than 3")
                 else:
