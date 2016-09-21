@@ -1,6 +1,6 @@
 private_variables.py
-colombia.txt
-india.txt
+colombia.*
+india.*
 .ipynb_checkpoints/
 *.pyc
 __pycache__/

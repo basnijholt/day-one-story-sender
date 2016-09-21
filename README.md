@@ -6,7 +6,7 @@ It uses the Gmail API to send e-mails and sends a message at a random time durin
 
 ## How to use
 ### Setup stories to send and private variables
-Select the Day One entries in the desktop Day One app and right-click `Open in... -> Plain Text -> TextEdit` and save this in the folder with these scripts.
+Select the Day One entries in the desktop Day One app and right-click `Open in... -> JSON -> TextEdit` and save this in the folder with these scripts.
 
 Edit the `private_variables_example.py` and save as `private_variables.py`.
 
@@ -20,6 +20,7 @@ The random send algorithm is written in a way that on the middle of the day ther
 2. Install the Google Client Library with:
 ```
 pip install --upgrade google-api-python-client
+pip install https://github.com/ryancox/motionless/archive/master.zip
 ```
 3. Run (add the `--noauth_local_webserver` flag if you work through `ssh`)
 ```
