@@ -1,6 +1,6 @@
 # Day One story sender
 
-I promised my girlfriend to send her a story from our trip every day. During our trip, I wrote a diary everyday on my phone in the [Day One](http://dayoneapp.com/) app. Here I use the desktop app to export the stories, you can export from your phone, but then you'll have all your entries, so that would require deleting unwanted entries in that `json` file, which you can even do in a JSON viewer.
+I promised my girlfriend to send her a story from our trip every day. During our trip, I wrote a diary everyday on my phone in the [Day One](http://dayoneapp.com/) app. Here I use the desktop app to export the stories, you can export from your phone too by going to settings and selecting a date range, however I didn't test this, although it should work.
 
 It uses the Gmail API to send e-mails and sends a message at a random time during the day between 10:00 and 23:00.
 
