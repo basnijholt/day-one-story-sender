@@ -122,6 +122,7 @@ def create_todays_message(day_one_file, base):
 if __name__ == "__main__":
     # execute only if run as a script
     send_file = os.path.join(file_path, 'send.txt')
+    day_one_file = os.path.join(file_path, day_one_file)
     if not os.path.exists(send_file):
         # Create send.txt if it doesn't exist
         open(send_file, 'w').close()
