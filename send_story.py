@@ -88,7 +88,7 @@ def distance(entries, index):
 
 def distance_text(entries, index):
     km = distance(entries, index)
-    return "The distance since yesterday is {:.2} kilometers.".format(km)
+    return "The distance since yesterday is {0:.1f} kilometers.".format(km)
 
 
 def load_entries_from_json(day_one_file):
