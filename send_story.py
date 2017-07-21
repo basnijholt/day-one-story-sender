@@ -20,7 +20,7 @@ from motionless import CenterMap
 from pytz import timezone, utc
 
 # Local imports
-from private_variables import day_one_file, her_mail, my_mail  # all strings
+from private_variables import day_one_file, her_mail, my_mail, title  # all strings
 from private_variables import start_date  # datetime.date object
 
 python_version = sys.version_info.major
@@ -107,7 +107,7 @@ def create_todays_message(day_one_file, base):
     index = todays_index(base, len(entries))
     entry = entries[index]
 
-    subject = "Love in India: #{}".format(index + 1)
+    subject = "{}: #{}".format(title, index + 1)
     message_text = day_header(remove_entry_tag(entry['text']))
     message_text += "<p><em>{}</em></p>".format(parse_date(entry))
     message_text += "<p><em>{}</em></p>".format(weather(entry))
