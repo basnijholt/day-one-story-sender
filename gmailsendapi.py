@@ -1,24 +1,22 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-import httplib2
-import os
-from apiclient import discovery
-import oauth2client
-import argparse
 import base64
 from email.mime.text import MIMEText
+import os
+import pickle
 import sys
+
+from googleapiclient.discovery import build
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
 from private_variables import my_mail
 
 python_version = sys.version_info.major
 
-flags = argparse.ArgumentParser(
-    parents=[oauth2client.tools.argparser]).parse_args()
-
 SCOPES = 'https://mail.google.com/'
-CLIENT_SECRET_FILE = 'client_secret.json'
-APPLICATION_NAME = 'Gmail API Python Quickstart'
+CLIENT_SECRET_FILE = 'credentials.json'
 
 
 def get_credentials():
@@ -30,30 +28,30 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
-    if not os.path.exists(credential_dir):
-        os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir,
-                                   'mail-script.json')
-
-    store = oauth2client.file.Storage(credential_path)
-    credentials = store.get()
-
-    if not credentials or credentials.invalid:
-        flow = oauth2client.client.flow_from_clientsecrets(
-            CLIENT_SECRET_FILE, SCOPES)
-        flow.user_agent = APPLICATION_NAME
-        if flags:
-            credentials = oauth2client.tools.run_flow(flow, store, flags)
-        print('Storing credentials to ' + credential_path)
-    return credentials
+    creds = None
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                CLIENT_SECRET_FILE, SCOPES)
+            creds = flow.run_local_server()
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+    return creds
 
 
 def get_service():
     credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('gmail', 'v1', http=http)
+    service = build('gmail', 'v1', credentials=credentials)
     return service
 
 
