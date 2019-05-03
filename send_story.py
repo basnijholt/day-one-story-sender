@@ -15,11 +15,11 @@ import sys
 import dateutil.parser
 import geopy.distance
 from geopy.geocoders import Nominatim
-from gmailsendapi import create_message, send_message
 from motionless import CenterMap
 from pytz import timezone, utc
 
 # Local imports
+from gmailsendapi import create_message, send_message
 from private_variables import day_one_file, her_mail, my_mail, title  # all strings
 from private_variables import start_date  # datetime.date object
 
@@ -39,7 +39,9 @@ def day_header(text):
 
 def map_html(entry):
     lat, lon = get_lat_lon(entry)
-    cmap = CenterMap(lat=lat, lon=lon, maptype='terrain', zoom=10)
+    with open(os.path.join(file_path, 'api_key.txt')) as f:
+        key = f.read()
+    cmap = CenterMap(lat=lat, lon=lon, maptype='terrain', zoom=10, key=key)
     return "<img src='{}'>".format(cmap.generate_url())
 
 
@@ -73,7 +75,7 @@ def get_lat_lon(entry):
 
 
 def adress(entry):
-    geolocator = Nominatim()
+    geolocator = Nominatim(user_agent="day-one-story-sender")
     loc = get_lat_lon(entry)
     location = geolocator.reverse(loc)
     return location.address
@@ -108,6 +110,7 @@ def create_todays_message(day_one_file, base):
     entry = entries[index]
 
     subject = "{}: #{}".format(title, index + 1)
+    print(subject)
     message_text = day_header(remove_entry_tag(entry['text']))
     message_text += "<p><em>{}</em></p>".format(parse_date(entry))
     message_text += "<p><em>{}</em></p>".format(weather(entry))
@@ -116,7 +119,7 @@ def create_todays_message(day_one_file, base):
         message_text += "<p><strong>{}</strong></p>".format(
             distance_text(entries, index))
     message_text += map_html(entry)
-    return subject, message_text
+    return subject, message_text.replace(r'\.', '.')
 
 
 if __name__ == "__main__":

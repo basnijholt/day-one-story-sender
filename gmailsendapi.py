@@ -16,8 +16,10 @@ from private_variables import my_mail
 python_version = sys.version_info.major
 
 SCOPES = 'https://mail.google.com/'
-CLIENT_SECRET_FILE = 'credentials.json'
 
+file_path = os.path.dirname(os.path.abspath(__file__))
+CLIENT_SECRET_FILE = os.path.join(file_path, 'credentials.json')
+TOKEN_FILE = os.path.join(file_path, 'token.pickle')
 
 def get_credentials():
     """Gets valid user credentials from storage.
@@ -32,8 +34,8 @@ def get_credentials():
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
+    if os.path.exists(TOKEN_FILE):
+        with open(TOKEN_FILE, 'rb') as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -44,7 +46,7 @@ def get_credentials():
                 CLIENT_SECRET_FILE, SCOPES)
             creds = flow.run_local_server()
         # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
+        with open(TOKEN_FILE, 'wb') as token:
             pickle.dump(creds, token)
     return creds
 

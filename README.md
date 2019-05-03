@@ -17,17 +17,12 @@ The random send algorithm is written in a way that on the middle of the day ther
 
 Install Python dependencies
 ```
-pip install https://github.com/ryancox/motionless/archive/master.zip # because of bugged pip version
-pip install geopy python-dateutil pytz
+pip install -r requirements.py
 ```
 
 ### Setup Google API
-1. Follow [step 1: Turn on the Gmail API](https://developers.google.com/gmail/api/quickstart/python#step_1_turn_on_the_api_name) to create a `client_secret.json` file.
-2. Install the Google Client Library with:
-```
-pip install --upgrade google-api-python-client
-```
-3. Run (add the `--noauth_local_webserver` flag if you work through `ssh`)
+1. Follow [step 1: Turn on the Gmail API](https://developers.google.com/gmail/api/quickstart/python#step_1_turn_on_the_api_name) to create a `credentials.json` file for OAuth, also create an API key for Google Maps and save it in `api_key.txt`.
+2. Run
 ```
 python gmailsendapi.py
 ```
