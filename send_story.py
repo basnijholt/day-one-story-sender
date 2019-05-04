@@ -119,7 +119,7 @@ def create_todays_message(day_one_file, base):
         message_text += "<p><strong>{}</strong></p>".format(
             distance_text(entries, index))
     message_text += map_html(entry)
-    return subject, message_text.replace(r'\.', '.')
+    return subject, message_text.replace(r'\.', '.').replace(r'\(', '(').replace(r'\)', ')')
 
 
 if __name__ == "__main__":
